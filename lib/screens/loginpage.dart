@@ -1,6 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import "package:flutter/material.dart";
 import 'package:clay_containers/clay_containers.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import "package:attendease/screens/home.dart";
@@ -149,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
   print(response.body);
 
   if(response.statusCode == 200){
-       final prefs = await SharedPreferences.getInstance();
+      final prefs = await SharedPreferences.getInstance();
       await prefs.setString('username',username!);
       await prefs.setString('password',password!);
       Navigator.push(
