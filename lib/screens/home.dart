@@ -23,6 +23,11 @@ class _HomeState extends State<Home> {
     fetchData(widget.responseData);
   }
 
+// Before you go diving to this code; 
+// This code is/was full of trial and errors. 
+// I really don't know how I pulled the logic.
+// But the logic works, and if it works let it work. DON'T CHANGE!
+
   Future<void> fetchData(Map<String, dynamic> responseData) async {
     // Extract user data
     Map<String, dynamic> userData = responseData['user_data'];
@@ -36,28 +41,25 @@ class _HomeState extends State<Home> {
               'attendance': subject['attendance'] as String,
             })
         .toList();
-
-    // Calculate overall percentage
     overallPercentage = calculateOverallPercentage(attendanceData);
-
     setState(() {});
   }
 
-double calculateOverallPercentage(List<Map<String, String>> attendanceData) {
-  int totalAttended = 0;
-  int totalClasses = 0;
+  double calculateOverallPercentage(List<Map<String, String>> attendanceData) {
+    int totalAttended = 0;
+    int totalClasses = 0;
 
-  for (var subjectData in attendanceData) {
-    String attendance = subjectData['attendance'] ?? '';
-    List<String> parts = attendance.split('/');
-    if (parts.length == 2) {
-      totalAttended += int.parse(parts[0]);
-      totalClasses += int.parse(parts[1].split(' ')[0]); // Extract total classes from the second part
+    for (var subjectData in attendanceData) {
+      String attendance = subjectData['attendance'] ?? '';
+      List<String> parts = attendance.split('/');
+      if (parts.length == 2) {
+        totalAttended += int.parse(parts[0]);
+        totalClasses += int.parse(parts[1].split(' ')[0]); // Extract total classes from the second part
+      }
     }
-  }
 
-  return totalClasses > 0 ? totalAttended / totalClasses * 100 : 0;
-}
+    return totalClasses > 0 ? totalAttended / totalClasses * 100 : 0;
+  }
 
 
   @override
