@@ -38,11 +38,11 @@ class _LoginScreenState extends State<LoginScreen> {
               borderRadius: 15.0,
               surfaceColor: Colors.grey,
               parentColor: Colors.black87,
-              height: MediaQuery.of(context).size.height,
+              height: MediaQuery.of(context).size.height * 0.9,
               width: MediaQuery.of(context).size.width,
               child: Column(
                 children: [
-                  const SizedBox(height: 450,),
+                  const SizedBox(height: 400,),
                   Container(
                     margin: const EdgeInsets.all(10),
                     padding: const EdgeInsets.all(5),
@@ -147,15 +147,17 @@ class _LoginScreenState extends State<LoginScreen> {
         'Accept': 'application/json',},
     body: jsonEncode(update)
   );
-  print(response.body);
+ // print(response.body);
 
   if(response.statusCode == 200){
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('username',username!);
       await prefs.setString('password',password!);
+      Map<String, dynamic> responseData = jsonDecode(response.body);
+      await prefs.setString('responseData', jsonEncode(responseData));
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Home(name: username.toString())));
+        MaterialPageRoute(builder: (context) => Home(name: username.toString(),responseData: responseData,)));
 
   }
   else{
@@ -167,18 +169,18 @@ class _LoginScreenState extends State<LoginScreen> {
   showAlertDialog(BuildContext context) {
     Widget retryButton = ElevatedButton(
       style: ElevatedButton.styleFrom(
-        shape: const CircleBorder(eccentricity: 1,)
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0)))
       ),
       child: Container(
         padding: const EdgeInsets.fromLTRB(25, 4, 25, 4),
-        child: const Text("Retry", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+        child: const Text("Retry", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16,color: Colors.black87),),
       ),
       onPressed:  ()async {
         Navigator.pop(context);
       },
     );
    AlertDialog alert = AlertDialog(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Colors.grey[700],
       actionsAlignment: MainAxisAlignment.center,
       //contentPadding: EdgeInsets.fromLTRB(100, 10, 100, 10),
       content: const SingleChildScrollView(
@@ -200,10 +202,8 @@ class _LoginScreenState extends State<LoginScreen> {
       builder: (BuildContext context) {
         return Container(
           decoration: BoxDecoration(
-             border: Border.all(
+            border: Border.all(
             width: 8,),
-             borderRadius: BorderRadius.circular(12),
-
           ),
           child: alert,
         );

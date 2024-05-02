@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 import "package:attendease/screens/home.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:attendease/screens/loginpage.dart";
+import 'dart:convert';
 
 class SplashScreen extends StatefulWidget {
 //  const SplashScreen({super.key});
@@ -29,11 +30,14 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     // ignore: await_only_futures
     String? username = await pref.getString("username");
-//    String? password = await pref.getString("password");
-    if(username!=null){
+    // ignore: await_only_futures
+    String? password = await pref.getString("password");
+    String? responseDataString = pref.getString("responseData");
+    if(username!=null && password!=null && responseDataString!=null){
+    Map<String, dynamic> responseData = jsonDecode(responseDataString);
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) =>  Home(name: username.toString())),
+        MaterialPageRoute(builder: (context) =>  Home(name: username.toString(), responseData: responseData,)),
       );      
     }
     else{
