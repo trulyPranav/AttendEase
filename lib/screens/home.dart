@@ -15,6 +15,7 @@ class _HomeState extends State<Home> {
   late String department;
   late String gender;
   late List<Map<String, String>> attendanceData;
+  double overallPercentage = 0; // Initialize overallPercentage
 
   @override
   void initState() {
@@ -28,8 +29,6 @@ class _HomeState extends State<Home> {
     userName = userData['name'];
     department = userData['department_id'];
     gender = userData['gender'];
-
-    // Extract attendance data
     List<dynamic> subjectsData = responseData['subject_data'];
     attendanceData = subjectsData
         .map<Map<String, String>>((subject) => {
@@ -38,14 +37,34 @@ class _HomeState extends State<Home> {
             })
         .toList();
 
+    // Calculate overall percentage
+    overallPercentage = calculateOverallPercentage(attendanceData);
+
     setState(() {});
   }
+
+double calculateOverallPercentage(List<Map<String, String>> attendanceData) {
+  int totalAttended = 0;
+  int totalClasses = 0;
+
+  for (var subjectData in attendanceData) {
+    String attendance = subjectData['attendance'] ?? '';
+    List<String> parts = attendance.split('/');
+    if (parts.length == 2) {
+      totalAttended += int.parse(parts[0]);
+      totalClasses += int.parse(parts[1].split(' ')[0]); // Extract total classes from the second part
+    }
+  }
+
+  return totalClasses > 0 ? totalAttended / totalClasses * 100 : 0;
+}
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: const Text('Home'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -61,20 +80,22 @@ class _HomeState extends State<Home> {
                 Text('Department: $department'),
                 Text('Gender: $gender'),
                 const SizedBox(height: 20),
-                Text('Attendance Data:'),
+                Text('Total Percentage: ${overallPercentage.toStringAsFixed(1)}%'),
+                const Text('Attendance Data:'),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: attendanceData.length,
                   itemBuilder: (context, index) {
-                    // Extracting values from attendanceData
-                    String subject = attendanceData[index]['subject'] ?? ''; // Provide a default value if null
+                    String subject = attendanceData[index]['subject'] ?? '';
                     String attendance = attendanceData[index]['attendance'] ?? '';
                     List<String> attendedParts = attendance.split(' ');
                     String attended = attendedParts.isNotEmpty ? attendedParts.first : '0';
                     int total = 0;
                     double percentage = 0;
-
+                    if (subject == 'Total' || subject == 'Percentage') {
+                      return const SizedBox.shrink(); // Don't show this, API dumb hehe
+                    }
                     if (attendedParts.isNotEmpty && attendedParts.first.contains('/')) {
                       List<String> parts = attendedParts.first.split('/');
                       if (parts.length == 2) {
@@ -83,7 +104,6 @@ class _HomeState extends State<Home> {
                         percentage = double.tryParse(attendedParts.last.replaceAll(RegExp(r'[()]'), '').replaceAll('%', '')) ?? 0 / 100;
                       }
                     }
-
                     return Container(
                       margin: const EdgeInsets.symmetric(vertical: 5),
                       padding: const EdgeInsets.all(10),
@@ -125,8 +145,8 @@ class _HomeState extends State<Home> {
                             child: Stack(
                               children: [
                                 SizedBox(
-                                width: 80,
-                                height: 80,                              
+                                  width: 80,
+                                  height: 80,
                                   child: CircularProgressIndicator(
                                     value: percentage / 100,
                                     backgroundColor: Colors.grey[300],
