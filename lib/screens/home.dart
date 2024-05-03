@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter/widgets.dart';
 
 class Home extends StatefulWidget {
   final String name;
   final Map<String, dynamic> responseData;
 
-  const Home({Key? key, required this.name, required this.responseData}) : super(key: key);
+  const Home({Key? key, required this.name, required this.responseData})
+      : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -17,6 +19,7 @@ class _HomeState extends State<Home> {
   late String gender;
   late List<Map<String, String>> attendanceData;
   double overallPercentage = 0; // Initialize overallPercentage
+  double selectedThreshold = 0.75; // Default threshold
 
   @override
   void initState() {
@@ -24,10 +27,10 @@ class _HomeState extends State<Home> {
     fetchData(widget.responseData);
   }
 
-// Before you go diving to this code; 
-// This code is/was full of trial and errors. 
-// I really don't know how I pulled the logic.
-// But the logic works, and if it works let it work. DON'T CHANGE!
+  // Before you go diving to this code;
+  // This code is/was full of trial and errors.
+  // I really don't know how I pulled the logic.
+  // But the logic works, and if it works let it work. DON'T CHANGE!
 
   Future<void> fetchData(Map<String, dynamic> responseData) async {
     // Extract user data
@@ -62,6 +65,14 @@ class _HomeState extends State<Home> {
     return totalClasses > 0 ? totalAttended / totalClasses * 100 : 0;
   }
 
+  String attendanceRequirement(int totalClasses, int attendedClasses) {
+    // double threshold = selectedThreshold * 100;
+    if (attendedClasses >= totalClasses * selectedThreshold) {
+      return 'Can cut ${((attendedClasses / selectedThreshold) - totalClasses).floor()} classes safely till ${selectedThreshold * 100}%';
+    } else {
+      return 'Need to attend ${(((1 / selectedThreshold) * totalClasses) - attendedClasses).floor()} classes for ${selectedThreshold * 100}%';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,12 +85,15 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Welcome \n         $userName',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                ),),
-                const Text('Hope you enjoy AttendEase! As it says;\nAttend Classes with Ease!'),
+                Text(
+                  'Welcome \n         $userName',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                  ),
+                ),
+                const Text(
+                    'Hope you enjoy AttendEase! As it says;\nAttend Classes with Ease!'),
                 const SizedBox(height: 20),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 5),
@@ -91,8 +105,9 @@ class _HomeState extends State<Home> {
                   child: Row(
                     children: [
                       const Text(
-                        'Total Attendence Percentage:',
-                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                        'Total Attendance Percentage:',
+                        style: TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.w500),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                       ),
@@ -108,27 +123,80 @@ class _HomeState extends State<Home> {
                               child: CircularProgressIndicator(
                                 value: overallPercentage / 100,
                                 backgroundColor: Colors.grey[300],
-                                valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Theme.of(context).primaryColor),
                                 strokeWidth: 5,
                               ),
                             ),
                             Center(
                               child: Text(
                                 '${overallPercentage.toStringAsFixed(1)}%',
-                                style: const TextStyle(fontSize: 16, color: Colors.black),
+                                style: const TextStyle(
+                                    fontSize: 16, color: Colors.black),
                               ),
                             ),
                           ],
                         ),
-                      ),                      
+                      ),
                     ],
                   ),
                 ),
-                const Text('Subject-Wise Attendance Data:', 
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                ),),
+                const Text(
+                  'Subject-Wise Attendance Data:',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Row(
+                  children: [
+                    const Expanded(
+                      flex: 4,
+                      child: Text(
+                        'Selected your target percentage:',
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),                    
+                    Expanded(
+                      flex: 1,
+                      child: DropdownButton<double>(
+                        borderRadius: BorderRadius.circular(7),
+                        autofocus: true,
+                        isDense: true,                        
+                        value: selectedThreshold,
+                        onChanged: (newValue) {
+                          setState(() {
+                            selectedThreshold = newValue!;
+                          });
+                        },
+                        items: const <DropdownMenuItem<double>>[
+                          DropdownMenuItem(
+                            value: 0.75,
+                            child: Text('75%'),
+                          ),
+                          DropdownMenuItem(
+                            value: 0.8,
+                            child: Text('80%'),
+                          ),
+                          DropdownMenuItem(
+                            value: 0.85,
+                            child: Text('85%'),
+                          ),
+                          DropdownMenuItem(
+                            value: 0.9,
+                            child: Text('90%'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -166,7 +234,8 @@ class _HomeState extends State<Home> {
                               children: [
                                 Text(
                                   subject,
-                                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                                  style: const TextStyle(
+                                      fontSize: 17, fontWeight: FontWeight.w500),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                 ),
@@ -177,11 +246,9 @@ class _HomeState extends State<Home> {
                                 const SizedBox(height: 5),
                                 Text(
                                   total > 0
-                                      ? percentage >= 0.75
-                                      ? 'Can cut ${(int.parse(attended) / 0.75 - total).floor()} classes safely till 75%'
-                                      : 'Need to attend ${(3 * total - 4 * int.parse(attended)).toString()} classes for 75%'
+                                      ? attendanceRequirement(total, int.parse(attended))
                                       : 'Attendance not entered',
-                                      style: const TextStyle(fontSize: 15),
+                                  style: const TextStyle(fontSize: 15),
                                 ),
                               ],
                             ),
@@ -198,14 +265,16 @@ class _HomeState extends State<Home> {
                                   child: CircularProgressIndicator(
                                     value: percentage / 100,
                                     backgroundColor: Colors.grey[300],
-                                    valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Theme.of(context).primaryColor),
                                     strokeWidth: 5,
                                   ),
                                 ),
                                 Center(
                                   child: Text(
                                     '${percentage.toStringAsFixed(1)}%',
-                                    style: const TextStyle(fontSize: 16, color: Colors.black),
+                                    style: const TextStyle(
+                                        fontSize: 16, color: Colors.black),
                                   ),
                                 ),
                               ],
