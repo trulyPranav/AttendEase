@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class Home extends StatefulWidget {
   final String name;
@@ -65,25 +66,69 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Welcome, ${widget.name}!'),
+                Text('Welcome \n         $userName',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                ),),
+                const Text('Hope you enjoy AttendEase! As it says;\nAttend Classes with Ease!'),
                 const SizedBox(height: 20),
-                Text('User Name: $userName'),
-                Text('Department: $department'),
-                Text('Gender: $gender'),
-                const SizedBox(height: 20),
-                Text('Total Percentage: ${overallPercentage.toStringAsFixed(1)}%'),
-                const Text('Attendance Data:'),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    children: [
+                      const Text(
+                        'Total Attendence Percentage:',
+                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                      const SizedBox(width: 10),
+                      SizedBox(
+                        width: 80,
+                        height: 80,
+                        child: Stack(
+                          children: [
+                            SizedBox(
+                              width: 80,
+                              height: 80,
+                              child: CircularProgressIndicator(
+                                value: overallPercentage / 100,
+                                backgroundColor: Colors.grey[300],
+                                valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+                                strokeWidth: 5,
+                              ),
+                            ),
+                            Center(
+                              child: Text(
+                                '${overallPercentage.toStringAsFixed(1)}%',
+                                style: const TextStyle(fontSize: 16, color: Colors.black),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),                      
+                    ],
+                  ),
+                ),
+                const Text('Subject-Wise Attendance Data:', 
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -133,9 +178,10 @@ class _HomeState extends State<Home> {
                                 Text(
                                   total > 0
                                       ? percentage >= 0.75
-                                      ? 'Can cut ${(int.parse(attended) / 0.75 - total).floor()} classes'
-                                      : 'Need to attend ${(3 * total - 4 * int.parse(attended)).toString()} classes'
+                                      ? 'Can cut ${(int.parse(attended) / 0.75 - total).floor()} classes safely till 75%'
+                                      : 'Need to attend ${(3 * total - 4 * int.parse(attended)).toString()} classes for 75%'
                                       : 'Attendance not entered',
+                                      style: const TextStyle(fontSize: 15),
                                 ),
                               ],
                             ),
