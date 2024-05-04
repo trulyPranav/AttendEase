@@ -60,6 +60,7 @@ class _HomeState extends State<Home> {
         userName = userData['name'];
         department = userData['department_id'];
         gender = userData['gender'];
+        setState(() {
         List<dynamic> subjectsData = responseData['subject_data'];
         attendanceData = subjectsData
             .map<Map<String, String>>((subject) => {
@@ -68,6 +69,7 @@ class _HomeState extends State<Home> {
                 })
             .toList();
         overallPercentage = calculateOverallPercentage(attendanceData);
+      });
         setState(() {
           flag = 1;
         });

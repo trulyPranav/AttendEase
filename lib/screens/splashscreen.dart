@@ -4,7 +4,6 @@ import "package:flutter/material.dart";
 import "package:attendease/screens/home.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:attendease/screens/loginpage.dart";
-import 'dart:convert';
 
 class SplashScreen extends StatefulWidget {
 //  const SplashScreen({super.key});
