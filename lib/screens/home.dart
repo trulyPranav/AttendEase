@@ -1,8 +1,11 @@
+import 'package:attendease/screens/profile.dart';
+import 'package:attendease/screens/settings.dart';
 import 'package:flutter/material.dart';
 import "package:shared_preferences/shared_preferences.dart";
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:animated_text_kit/animated_text_kit.dart';
+import "package:page_transition/page_transition.dart";
 
 
 class Home extends StatefulWidget {
@@ -97,11 +100,27 @@ class _HomeState extends State<Home> {
   }
 
   String attendanceRequirement(int totalClasses, int attendedClasses) {
-    // double threshold = selectedThreshold * 100;
+    double threshold = selectedThreshold * 100;
+    int requiredClass;    
     if (attendedClasses >= totalClasses * selectedThreshold) {
-      return 'Can cut ${((attendedClasses / selectedThreshold) - totalClasses).floor()} classes safely till ${selectedThreshold * 100}%';
+      return 'Can skip ${((attendedClasses / selectedThreshold) - totalClasses).floor()} classes till $threshold%';
     } else {
-      return 'Need to attend ${(((1 / selectedThreshold) * totalClasses) - attendedClasses).floor()} classes for ${selectedThreshold * 100}%';
+      if(threshold == 90){
+        requiredClass = (9 * totalClasses) - (8 * attendedClasses);
+        return 'Need to attend $requiredClass classes for $threshold%';  
+      }
+      else if(threshold == 85){
+        requiredClass = (7 * totalClasses) - (6 * attendedClasses);
+        return 'Need to attend $requiredClass classes for $threshold%';          
+      }
+      else if(threshold == 80){
+        requiredClass = (5 * totalClasses) - (4 * attendedClasses);
+        return 'Need to attend $requiredClass classes for $threshold%';          
+      }
+      else{
+        requiredClass = (3 * totalClasses) - (4 * attendedClasses);
+        return 'Need to attend $requiredClass classes for $threshold%';           
+      }
     }
   }
 
@@ -109,34 +128,37 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     if (flag == 0){
       return Scaffold(
-        body: SafeArea(
-          child: Center(
-            child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const SizedBox(width: 20.0, height: 100.0),
-                  const Text(
-                    'Be',
-                    style: TextStyle(fontSize: 43.0),
+        bottomNavigationBar: const BottomAppBar(
+          surfaceTintColor: Colors.white,
+          child: Center(child: Text('Please Wait. Its Worth It :)', style: TextStyle(fontSize: 15),))
+        ),
+        body: Center(
+          child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(width: 20.0, height: 100.0),
+                const Text(
+                  'Be',
+                  style: TextStyle(fontSize: 43.0),
+                ),
+                const SizedBox(width: 20.0, height: 100.0),
+                DefaultTextStyle(
+                  style: const TextStyle(
+                    fontSize: 40.0,
+                    fontFamily: 'Horizon',
                   ),
-                  const SizedBox(width: 20.0, height: 100.0),
-                  DefaultTextStyle(
-                    style: const TextStyle(
-                      fontSize: 40.0,
-                      //fontFamily: 'Horizon',
-                    ),
-                    child: AnimatedTextKit(
-                      repeatForever: true,
-                      animatedTexts: [
-                        RotateAnimatedText('AWESOME', textStyle: const TextStyle(color: Colors.black)),
-                        RotateAnimatedText('OPTIMISTIC', textStyle: const TextStyle(color: Colors.black)),
-                        RotateAnimatedText('DIFFERENT', textStyle: const TextStyle(color: Colors.black)),
-                      ],
-                    ),
+                  child: AnimatedTextKit(
+                    repeatForever: true,
+                    animatedTexts: [
+                      RotateAnimatedText('AWESOME', textStyle: const TextStyle(color: Colors.black)),
+                      RotateAnimatedText('OPTIMISTIC', textStyle: const TextStyle(color: Colors.black)),
+                      RotateAnimatedText('DIFFERENT', textStyle: const TextStyle(color: Colors.black)),
+                    ],
                   ),
-                ],
-              ),
-          )),
+                ),
+              ],
+            ),
+        ),
       );} 
     else {
       return Scaffold(
@@ -148,6 +170,18 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: (){Navigator.push(context, PageTransition(child: const ProfilePage(), type: PageTransitionType.rightToLeft) );},
+                      child: const Icon(Icons.account_circle_rounded, size: 35.0, )),
+                    const SizedBox(width: 15,),
+                    GestureDetector(
+                      onTap: (){Navigator.push(context, PageTransition(child: const Settings(), type: PageTransitionType.rightToLeft) );},
+                      child: const Icon(Icons.settings, size: 35.0,)),
+                  ],
+                ),
                 Text(
                   'Welcome \n         $userName',
                   style: const TextStyle(
