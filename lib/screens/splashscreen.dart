@@ -34,10 +34,9 @@ class _SplashScreenState extends State<SplashScreen> {
     String? password = await pref.getString("password");
     String? responseDataString = pref.getString("responseData");
     if(username!=null && password!=null && responseDataString!=null){
-    Map<String, dynamic> responseData = jsonDecode(responseDataString);
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) =>  Home(name: username.toString(), responseData: responseData,)),
+        MaterialPageRoute(builder: (context) =>  Home(name: username.toString())),
       );      
     }
     else{

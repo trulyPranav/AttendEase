@@ -157,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await prefs.setString('responseData', jsonEncode(responseData));
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Home(name: username.toString(),responseData: responseData,)));
+        MaterialPageRoute(builder: (context) => Home(name: username.toString())));
 
   }
   else{

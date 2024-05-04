@@ -1,30 +1,33 @@
 import 'package:flutter/material.dart';
-// import 'package:animated_text_kit/animated_text_kit.dart';
+import "package:shared_preferences/shared_preferences.dart";
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 
 class Home extends StatefulWidget {
   final String name;
-  final Map<String, dynamic> responseData;
 
-  const Home({Key? key, required this.name, required this.responseData})
-      : super(key: key);
+  const Home({super.key, required this.name});
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  String api = "https://fetcherapi.onrender.com";
   late String userName;
   late String department;
   late String gender;
   late List<Map<String, String>> attendanceData;
-  double overallPercentage = 0; // Initialize overallPercentage
-  double selectedThreshold = 0.75; // Default threshold
+  double overallPercentage = 0;
+  double selectedThreshold = 0.75; // Default selected percentage
+  int flag = 0;
 
   @override
   void initState() {
     super.initState();
-    fetchData(widget.responseData);
+    fetchData();
   }
 
   // Before you go diving to this code;
@@ -32,22 +35,48 @@ class _HomeState extends State<Home> {
   // I really don't know how I pulled the logic.
   // But the logic works, and if it works let it work. DON'T CHANGE!
 
-  Future<void> fetchData(Map<String, dynamic> responseData) async {
-    // Extract user data
-    Map<String, dynamic> userData = responseData['user_data'];
-    userName = userData['name'];
-    department = userData['department_id'];
-    gender = userData['gender'];
-    List<dynamic> subjectsData = responseData['subject_data'];
-    attendanceData = subjectsData
-        .map<Map<String, String>>((subject) => {
-              'subject': subject['subject'] as String,
-              'attendance': subject['attendance'] as String,
-            })
-        .toList();
-    overallPercentage = calculateOverallPercentage(attendanceData);
-    setState(() {});
+  Future<void> fetchData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? username = pref.getString("username");
+    String? password = pref.getString("password");
+
+    if (username != null && password != null) {
+        Map<String, dynamic> update = {
+          "username" : username,
+          "password" : password.toString(),
+        };      
+        final url = Uri.parse(api);
+        final response = await http.post(
+          url,
+          headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',},
+          body: jsonEncode(update)
+        );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = jsonDecode(response.body);
+        Map<String, dynamic> userData = responseData['user_data'];
+        userName = userData['name'];
+        department = userData['department_id'];
+        gender = userData['gender'];
+        List<dynamic> subjectsData = responseData['subject_data'];
+        attendanceData = subjectsData
+            .map<Map<String, String>>((subject) => {
+                  'subject': subject['subject'] as String,
+                  'attendance': subject['attendance'] as String,
+                })
+            .toList();
+        overallPercentage = calculateOverallPercentage(attendanceData);
+        setState(() {
+          flag = 1;
+        });
+      } else {
+        print("Failed to fetch attendance data: ${response.statusCode}");
+      }
+    }
   }
+
 
   double calculateOverallPercentage(List<Map<String, String>> attendanceData) {
     int totalAttended = 0;
@@ -76,7 +105,39 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    if (flag == 0){
+      return Scaffold(
+        body: SafeArea(
+          child: Center(
+            child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const SizedBox(width: 20.0, height: 100.0),
+                  const Text(
+                    'Be',
+                    style: TextStyle(fontSize: 43.0),
+                  ),
+                  const SizedBox(width: 20.0, height: 100.0),
+                  DefaultTextStyle(
+                    style: const TextStyle(
+                      fontSize: 40.0,
+                      //fontFamily: 'Horizon',
+                    ),
+                    child: AnimatedTextKit(
+                      repeatForever: true,
+                      animatedTexts: [
+                        RotateAnimatedText('AWESOME', textStyle: const TextStyle(color: Colors.black)),
+                        RotateAnimatedText('OPTIMISTIC', textStyle: const TextStyle(color: Colors.black)),
+                        RotateAnimatedText('DIFFERENT', textStyle: const TextStyle(color: Colors.black)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+          )),
+      );} 
+    else {
+      return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -291,5 +352,6 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
+   }
   }
 }
