@@ -77,7 +77,7 @@ class _HomeState extends State<Home> {
           flag = 1;
         });
       } else {
-        print("Failed to fetch attendance data: ${response.statusCode}");
+        // print("Failed to fetch attendance data: ${response.statusCode}");
       }
     }
   }
