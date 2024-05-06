@@ -1,18 +1,16 @@
 import "package:flutter/material.dart";
 
-class Settings extends StatefulWidget {
-  const Settings({super.key});
+class About extends StatefulWidget {
+  const About({super.key});
 
   @override
-  State<Settings> createState() => _SettingsState();
+  State<About> createState() => _SettingsState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingsState extends State<About> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder(
-      color: Colors.black,
-      //toDoTask
-    );
+    return const Placeholder();
   }
 }
+

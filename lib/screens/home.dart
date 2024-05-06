@@ -7,18 +7,18 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:attendease/screens/profile.dart';
 import 'package:attendease/screens/settings.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Home extends StatefulWidget {
   final String name;
-
   const Home({super.key, required this.name});
-
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   String api = "https://fetcherapi.onrender.com";
+  late String etlabID;
   late String userName;
   late String department;
   late String gender;
@@ -59,6 +59,7 @@ class _HomeState extends State<Home> {
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = jsonDecode(response.body);
         Map<String, dynamic> userData = responseData['user_data'];
+        etlabID = username;
         userName = userData['name'];
         department = userData['department_id'];
         gender = userData['gender'];
@@ -174,10 +175,10 @@ class _HomeState extends State<Home> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'HOME',
                         style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.w500),
+                            fontSize: 30, fontWeight: FontWeight.w500, fontFamily: GoogleFonts.averiaLibre().fontFamily),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -187,7 +188,7 @@ class _HomeState extends State<Home> {
                                 Navigator.push(
                                     context,
                                     PageTransition(
-                                        child: const ProfilePage(),
+                                        child: ProfilePage(username: etlabID, name: userName, dept: department, percent: overallPercentage,),
                                         type: PageTransitionType.rightToLeft));
                               },
                               child: const Icon(Icons.account_circle_rounded,
@@ -198,14 +199,15 @@ class _HomeState extends State<Home> {
                                 Navigator.push(
                                     context,
                                     PageTransition(
-                                        child: const Settings(),
+                                        child: const About(),
                                         type: PageTransitionType.rightToLeft));
                               },
-                              child: const Icon(Icons.settings, size: 35.0)),
-                        ],
+                              child: const Icon(Icons.auto_awesome_sharp, size: 35.0)),
+                        ], 
                       ),
                     ],
                   ),
+                  const SizedBox(height: 20),                  
                   const Center(
                     child: Text(
                       'AttendEase',
@@ -217,7 +219,6 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ),
-                  const Text('Hope you enjoy AttendEase! As it says;\nAttend Classes with Ease!'),
                   const SizedBox(height: 20),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 5),
@@ -261,6 +262,7 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 10,),
                   const Text(
                     'Subject-Wise Attendance Data:',
                     style: TextStyle(
