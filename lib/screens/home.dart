@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:animated_text_kit/animated_text_kit.dart';
 import "package:page_transition/page_transition.dart";
+import 'package:percent_indicator/percent_indicator.dart';
 
 
 class Home extends StatefulWidget {
@@ -150,9 +151,9 @@ class _HomeState extends State<Home> {
                   child: AnimatedTextKit(
                     repeatForever: true,
                     animatedTexts: [
-                      RotateAnimatedText('AWESOME', textStyle: const TextStyle(color: Colors.black)),
-                      RotateAnimatedText('OPTIMISTIC', textStyle: const TextStyle(color: Colors.black)),
-                      RotateAnimatedText('DIFFERENT', textStyle: const TextStyle(color: Colors.black)),
+                      RotateAnimatedText('AWESOME', textStyle: const TextStyle(color: Colors.white)),
+                      RotateAnimatedText('OPTIMISTIC', textStyle: const TextStyle(color: Colors.white)),
+                      RotateAnimatedText('DIFFERENT', textStyle: const TextStyle(color: Colors.white)),
                     ],
                   ),
                 ),
@@ -171,23 +172,39 @@ class _HomeState extends State<Home> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GestureDetector(
-                      onTap: (){Navigator.push(context, PageTransition(child: const ProfilePage(), type: PageTransitionType.rightToLeft) );},
-                      child: const Icon(Icons.account_circle_rounded, size: 35.0, )),
-                    const SizedBox(width: 15,),
-                    GestureDetector(
-                      onTap: (){Navigator.push(context, PageTransition(child: const Settings(), type: PageTransitionType.rightToLeft) );},
-                      child: const Icon(Icons.settings, size: 35.0,)),
+                    const Text('HOME', 
+                      style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: (){Navigator.push(context, PageTransition(child: const ProfilePage(), type: PageTransitionType.rightToLeft) );},
+                          child: const Icon(Icons.account_circle_rounded, size: 35.0, )),
+                        const SizedBox(width: 15,),
+                        GestureDetector(
+                          onTap: (){Navigator.push(context, PageTransition(child: const Settings(), type: PageTransitionType.rightToLeft) );},
+                          child: const Icon(Icons.settings, size: 35.0,)),
+                      ],
+                    ),
                   ],
                 ),
-                Text(
-                  'Welcome \n         $userName',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                  ),
+                // const Text(
+                //   'Welcome',
+                //   style: TextStyle(
+                //     fontWeight: FontWeight.bold,
+                //     fontSize: 30,
+                //   ),
+                // ),
+                const Center(
+                  child: Text('AttendEase',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontFamily: 'Horizon',
+                      fontSize: 60,
+                    ),),
                 ),
                 const Text(
                     'Hope you enjoy AttendEase! As it says;\nAttend Classes with Ease!'),
@@ -196,7 +213,7 @@ class _HomeState extends State<Home> {
                   margin: const EdgeInsets.symmetric(vertical: 5),
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
+                    color: Colors.grey[300],
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Row(
@@ -204,37 +221,34 @@ class _HomeState extends State<Home> {
                       const Text(
                         'Total Attendance Percentage:',
                         style: TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.w500),
+                            fontSize: 17, fontWeight: FontWeight.w500,color: Colors.black),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                       ),
                       const SizedBox(width: 10),
-                      SizedBox(
-                        width: 80,
-                        height: 80,
-                        child: Stack(
-                          children: [
-                            SizedBox(
+                        SizedBox(
+                          width: 80,
+                          height: 80,
+                          child: Center(
+                            child: SizedBox(
                               width: 80,
                               height: 80,
-                              child: CircularProgressIndicator(
-                                value: overallPercentage / 100,
-                                backgroundColor: Colors.grey[300],
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    Theme.of(context).primaryColor),
-                                strokeWidth: 5,
-                              ),
-                            ),
-                            Center(
-                              child: Text(
+                              child: CircularPercentIndicator(
+                                radius: 40.0,
+                                animation: true,
+                                animationDuration: 3000,
+                                lineWidth: 6,
+                                circularStrokeCap: CircularStrokeCap.round,
+                                percent: overallPercentage/100,
+                                progressColor: progColor(overallPercentage),
+                                center: Text(
                                 '${overallPercentage.toStringAsFixed(1)}%',
                                 style: const TextStyle(
-                                    fontSize: 16, color: Colors.black),
-                              ),
+                                    fontSize: 16, color: Colors.black),)
                             ),
-                          ],
+                            ),
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),
@@ -248,7 +262,7 @@ class _HomeState extends State<Home> {
                 Row(
                   children: [
                     const Expanded(
-                      flex: 4,
+                      flex: 3,
                       child: Text(
                         'Selected your target percentage:',
                         style: TextStyle(
@@ -256,13 +270,12 @@ class _HomeState extends State<Home> {
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                       ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),                    
+                    ),            
                     Expanded(
                       flex: 1,
                       child: DropdownButton<double>(
+                        iconEnabledColor: Colors.white,
+                        iconDisabledColor: Colors.black,
                         borderRadius: BorderRadius.circular(7),
                         autofocus: true,
                         isDense: true,                        
@@ -308,6 +321,7 @@ class _HomeState extends State<Home> {
                     if (subject == 'Total' || subject == 'Percentage') {
                       return const SizedBox.shrink(); // Don't show this, API dumb hehe
                     }
+                    //Actual build starts here. Go on!
                     if (attendedParts.isNotEmpty && attendedParts.first.contains('/')) {
                       List<String> parts = attendedParts.first.split('/');
                       if (parts.length == 2) {
@@ -320,7 +334,7 @@ class _HomeState extends State<Home> {
                       margin: const EdgeInsets.symmetric(vertical: 5),
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: Colors.grey[300],
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(
@@ -332,20 +346,21 @@ class _HomeState extends State<Home> {
                                 Text(
                                   subject,
                                   style: const TextStyle(
-                                      fontSize: 17, fontWeight: FontWeight.w500),
+                                      fontSize: 17, fontWeight: FontWeight.w500, color: Colors.black),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
                                   attendance,
+                                  style: const TextStyle(color: Colors.black),
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
                                   total > 0
                                       ? attendanceRequirement(total, int.parse(attended))
                                       : 'Attendance not entered',
-                                  style: const TextStyle(fontSize: 15),
+                                  style: const TextStyle(fontSize: 15, color: Colors.black),
                                 ),
                               ],
                             ),
@@ -354,27 +369,24 @@ class _HomeState extends State<Home> {
                           SizedBox(
                             width: 80,
                             height: 80,
-                            child: Stack(
-                              children: [
-                                SizedBox(
-                                  width: 80,
-                                  height: 80,
-                                  child: CircularProgressIndicator(
-                                    value: percentage / 100,
-                                    backgroundColor: Colors.grey[300],
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        Theme.of(context).primaryColor),
-                                    strokeWidth: 5,
-                                  ),
-                                ),
-                                Center(
-                                  child: Text(
-                                    '${percentage.toStringAsFixed(1)}%',
-                                    style: const TextStyle(
-                                        fontSize: 16, color: Colors.black),
-                                  ),
-                                ),
-                              ],
+                            child: Center(
+                              child: SizedBox(
+                                width: 80,
+                                height: 80,
+                                child: CircularPercentIndicator(
+                                  radius: 40.0,
+                                  animation: true,
+                                  animationDuration: 3000,
+                                  lineWidth: 6,
+                                  circularStrokeCap: CircularStrokeCap.round,
+                                  percent: percentage/100,
+                                  progressColor: progColor(percentage),
+                                  center: Text(
+                                  '${percentage.toStringAsFixed(1)}%',
+                                  style: const TextStyle(
+                                      fontSize: 16, color: Colors.black),)
+                              ),
+                              ),
                             ),
                           ),
                         ],
@@ -390,4 +402,24 @@ class _HomeState extends State<Home> {
     );
    }
   }
+  Color progColor (percentage){
+    if(percentage >= 90) {
+      return Colors.green;
+    } 
+    else if (percentage >= 85 && percentage < 90){
+      return Colors.green.shade400;
+    } 
+    else if(percentage >= 80 && percentage < 85){
+      return Colors.green.shade200;
+    }
+    else if(percentage >= 75 && percentage < 80){
+      return Colors.red.shade300;
+    }
+    else {
+      return Colors.red;
+    }
+  }
 }
+
+
+
