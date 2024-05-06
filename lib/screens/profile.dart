@@ -1,5 +1,8 @@
+import 'package:attendease/screens/loginpage.dart';
 import "package:flutter/material.dart";
 import 'package:google_fonts/google_fonts.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   final String name;
@@ -23,13 +26,29 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween, //change
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                  'PROFILE',
-                  style: TextStyle(
-                      fontSize: 30, fontWeight: FontWeight.w500, fontFamily: GoogleFonts.averiaLibre().fontFamily),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                      'PROFILE',
+                      style: TextStyle(
+                          fontSize: 30, fontWeight: FontWeight.w500, fontFamily: GoogleFonts.averiaLibre().fontFamily),
+                    ),
+                  GestureDetector(
+                    onTap: (){logout(context);},
+                    child: const Icon(Icons.logout),
+                  )
+                ],
+              ),
               Text('You\'ve got ${widget.percent.toStringAsFixed(1)}% Total Attendance\nAnd this makes you a', style: const TextStyle(fontSize: 18),),
-              Center(child: Text(role(widget.percent),style: TextStyle(fontFamily: 'Horizon',fontSize: 90,color: Colors.blue.shade800),)),
+              Center(
+                child: AnimatedTextKit(
+                  repeatForever: true,
+                  animatedTexts: [
+                    ColorizeAnimatedText(role(widget.percent), textStyle: const TextStyle(fontFamily: 'Horizon', fontSize: 80.0), colors: [Colors.blue.shade800,Colors.red.shade800,Colors.white], speed: Durations.long3),
+                  ],
+                )
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -94,4 +113,46 @@ class _ProfilePageState extends State<ProfilePage> {
     return 'MAVELI';
     }
     }
+  
+  logout(BuildContext context){
+    
+    Widget back = ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue.shade500,
+      ),
+      onPressed: ()async {Navigator.pop(context);},
+      child: const Text('NO', style: TextStyle(fontWeight: FontWeight.bold),));
+    
+    Widget forward = ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue.shade500,
+        ),
+      onPressed: ()async {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.remove('username');
+        await prefs.remove('password');
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginScreen()),ModalRoute.withName('/'));
+      }, 
+      child: const Text('YES', style: TextStyle(fontWeight: FontWeight.bold)));
+
+    AlertDialog popper = AlertDialog(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      actionsAlignment: MainAxisAlignment.center,
+      content: const Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+        Text("Are you sure to LogOut?", style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+        ],
+        ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      actions: [
+        back,
+        const SizedBox(width: 20,),
+        forward],
+    );
+
+    showDialog(context: context, 
+      builder: (BuildContext context){
+        return Container(child: popper,);});
+  }
 }

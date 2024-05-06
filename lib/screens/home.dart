@@ -125,7 +125,7 @@ class _HomeState extends State<Home> {
     if (flag == 0) {
       return Scaffold(
         bottomNavigationBar: const BottomAppBar(
-            surfaceTintColor: Colors.white,
+            surfaceTintColor: Colors.transparent,
             child: Center(
                 child: Text(
               'Please Wait. Its Worth It :)',
@@ -136,9 +136,9 @@ class _HomeState extends State<Home> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(width: 20.0, height: 100.0),
-              const Text(
+              Text(
                 'Be',
-                style: TextStyle(fontSize: 43.0),
+                style: TextStyle(fontSize: 43.0, fontFamily: GoogleFonts.aBeeZee().fontFamily),
               ),
               const SizedBox(width: 20.0, height: 100.0),
               DefaultTextStyle(
