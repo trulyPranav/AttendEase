@@ -41,91 +41,109 @@ class _LoginScreenState extends State<LoginScreen> {
               height: MediaQuery.of(context).size.height * 0.9,
               width: MediaQuery.of(context).size.width,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  const SizedBox(height: 400,),
-                  Container(
-                    margin: const EdgeInsets.all(10),
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20)
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[400],
-                        borderRadius:BorderRadius.circular(20),
-                      ),
-                      child: TextFormField(
-                          showCursor: true,
-                          cursorColor: Theme.of(context).primaryColor,
-                          controller: fieldTextUsername,
-                          keyboardType: TextInputType.number,
-                          style: const TextStyle(fontSize: 16.0),
-                          textAlign: TextAlign.center,
-                          onSaved: (String? value) {},
-                          textInputAction: TextInputAction.next,
-                          decoration: const InputDecoration(
-                              hintText: 'Etlab ID',
-                              hintStyle: TextStyle(fontWeight: FontWeight.w400),
-                              border: InputBorder.none,),              
+                  const Center(
+                    child: Text(
+                      'AttendEase',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Horizon',
+                        fontSize: 70,
+                        color: Colors.black
                       ),
                     ),
                   ),
-                  const SizedBox(height: 5,),
-                  Container(
-                    margin: const EdgeInsets.all(10),
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20)
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[400],
-                        borderRadius:BorderRadius.circular(20),
-                      ),
-                      child: TextFormField(
-                          showCursor: true,
-                          cursorColor: Theme.of(context).primaryColor,
-                          controller: fieldTextPassword,
-                          keyboardType: TextInputType.visiblePassword,
-                          style: const TextStyle(fontSize: 16.0),
-                          textAlign: TextAlign.center,
-                          onSaved: (value) {},
-                          textInputAction: TextInputAction.done,
-                          decoration: const InputDecoration(
-                              hintText: 'Password',
-                              hintStyle: TextStyle(fontWeight: FontWeight.w400),
-                              border: InputBorder.none,),              
-                      ),
-                    ),
-                  ),     
-                  const SizedBox(height: 20,),
-                  ClayContainer(
-                    height: MediaQuery.of(context).size.height/20,
-                    width: MediaQuery.of(context).size.width/4,
-                    parentColor: Colors.white,
-                    surfaceColor: Colors.grey[400],
-                    spread: 2,
-                    depth: 5,
-                    emboss: true,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        usernameLogin(fieldTextUsername.text,fieldTextPassword.text);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(5),
-                        shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.black.withOpacity(0.6),
-                      ),
-                      child : const Icon(Icons.navigate_next_outlined,),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20)
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[400],
+                              borderRadius:BorderRadius.circular(20),
+                            ),
+                            child: TextFormField(
+                                showCursor: true,
+                                cursorColor: Theme.of(context).primaryColor,
+                                controller: fieldTextUsername,
+                                keyboardType: TextInputType.number,
+                                style: const TextStyle(fontSize: 16.0),
+                                textAlign: TextAlign.center,
+                                onSaved: (String? value) {},
+                                textInputAction: TextInputAction.next,
+                                decoration: const InputDecoration(
+                                    hintText: 'Etlab ID',
+                                    hintStyle: TextStyle(fontWeight: FontWeight.w400),
+                                    border: InputBorder.none,),              
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 5,),
+                        Container(
+                          margin: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20)
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[400],
+                              borderRadius:BorderRadius.circular(20),
+                            ),
+                            child: TextFormField(
+                                obscureText: true,
+                                showCursor: true,
+                                cursorColor: Theme.of(context).primaryColor,
+                                controller: fieldTextPassword,
+                                keyboardType: TextInputType.visiblePassword,
+                                style: const TextStyle(fontSize: 16.0),
+                                textAlign: TextAlign.center,
+                                onSaved: (value) {},
+                                textInputAction: TextInputAction.done,
+                                decoration: const InputDecoration(
+                                    hintText: 'Password',
+                                    hintStyle: TextStyle(fontWeight: FontWeight.w400),
+                                    border: InputBorder.none,),              
+                            ),
+                          ),
+                        ),     
+                        const SizedBox(height: 20,),
+                        ClayContainer(
+                          height: MediaQuery.of(context).size.height/20,
+                          width: MediaQuery.of(context).size.width/4,
+                          parentColor: Colors.white,
+                          surfaceColor: Colors.grey[400],
+                          spread: 2,
+                          depth: 5,
+                          emboss: true,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              usernameLogin(fieldTextUsername.text,fieldTextPassword.text);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(5),
+                              shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                              foregroundColor: Colors.white,
+                              backgroundColor: Colors.black.withOpacity(0.6),
+                            ),
+                            child : const Icon(Icons.navigate_next_outlined,),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-
-                  
                 ],
               ),
             ),
@@ -135,6 +153,19 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
   Future usernameLogin(String? username, String? password) async {
+ 
+   showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Colors.white,
+        ),
+      );
+    },
+  );
+
   Map<String, dynamic> update = {
     "username" : username,
     "password" : password,
@@ -147,6 +178,8 @@ class _LoginScreenState extends State<LoginScreen> {
         'Accept': 'application/json',},
     body: jsonEncode(update)
   );
+
+  Navigator.pop(context);
  // print(response.body);
 
   if(response.statusCode == 200){
@@ -169,7 +202,8 @@ class _LoginScreenState extends State<LoginScreen> {
   showAlertDialog(BuildContext context) {
     Widget retryButton = ElevatedButton(
       style: ElevatedButton.styleFrom(
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0)))
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        backgroundColor: Colors.blue.shade500,
       ),
       child: Container(
         padding: const EdgeInsets.fromLTRB(25, 4, 25, 4),
@@ -180,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     );
    AlertDialog alert = AlertDialog(
-      backgroundColor: Colors.grey[700],
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       actionsAlignment: MainAxisAlignment.center,
       //contentPadding: EdgeInsets.fromLTRB(100, 10, 100, 10),
       content: const SingleChildScrollView(

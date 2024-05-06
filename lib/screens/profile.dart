@@ -91,7 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         fontSize: 60,
                       ),
                     ),
-                  ),              
+                  ),
             ],
           ),
         ),
@@ -131,6 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
         final prefs = await SharedPreferences.getInstance();
         await prefs.remove('username');
         await prefs.remove('password');
+        // ignore: use_build_context_synchronously
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginScreen()),ModalRoute.withName('/'));
       }, 
       child: const Text('YES', style: TextStyle(fontWeight: FontWeight.bold)));

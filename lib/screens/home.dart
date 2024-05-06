@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:attendease/screens/profile.dart';
-import 'package:attendease/screens/settings.dart';
+import 'package:attendease/screens/about.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Home extends StatefulWidget {
