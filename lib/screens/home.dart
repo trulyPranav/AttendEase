@@ -104,8 +104,19 @@ class _HomeState extends State<Home> {
     if (attendedClasses >= totalClasses * selectedThreshold) {
       return 'Can skip ${((attendedClasses / selectedThreshold) - totalClasses).floor()} classes till ${threshold.toStringAsFixed(0)}%';
     } else {
-      requiredClass = ((selectedThreshold*totalClasses)-attendedClasses).floor();
-      return 'Need to attend $requiredClass for $threshold%';
+      if (threshold == 90) {
+        requiredClass = (9 * totalClasses) - (10 * attendedClasses);
+        return 'Need to attend $requiredClass classes for $threshold%';
+      } else if (threshold == 85) {
+        requiredClass = (17 * totalClasses) - (20 * attendedClasses);
+        return 'Need to attend $requiredClass classes for $threshold%';
+      } else if (threshold == 80) {
+        requiredClass = (4 * totalClasses) - (5 * attendedClasses);
+        return 'Need to attend $requiredClass classes for $threshold%';
+      } else {
+        requiredClass = (3 * totalClasses) - (4 * attendedClasses);
+        return 'Need to attend $requiredClass classes for $threshold%';
+      }
     }
   }
 
