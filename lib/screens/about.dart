@@ -102,7 +102,7 @@ class _SettingsState extends State<About> {
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     title: const Center(child: Text("Follow TinkerHub Instagram :)",style: TextStyle(fontWeight: FontWeight.bold),)),
     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-    content: const Text("TinkerHub is a non-profit community for coding enthusiasts, helping individuals leverage their skills, making them diverse and up-to-date.\nFollow us, and support for more such projects",),
+    content: const Text("TinkerHub is a non-profit community for coding enthusiasts, helping individuals leverage their skills, making them diverse and up-to-date.\nFollow us, and support for more such projects!",),
     actions: [
       getOut,
       SizedBox(width:  MediaQuery.of(context).size.width / 18,),
