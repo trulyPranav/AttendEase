@@ -188,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await prefs.setString('password',password!);
       Map<String, dynamic> responseData = jsonDecode(response.body);
       await prefs.setString('responseData', jsonEncode(responseData));
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Home(name: username.toString())));
 

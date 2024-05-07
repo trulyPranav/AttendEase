@@ -29,10 +29,10 @@ class _SettingsState extends State<About> {
                     fontSize: 30, fontWeight: FontWeight.w500, fontFamily: GoogleFonts.averiaLibre().fontFamily),
                   ),
                   const SizedBox(height: 10,),                  
-                  const Text('AttendEase is all about students being free. Students should be allowed the flexibility of the classes they attend. And this is the same reason why AttendEase exists!', style: TextStyle(fontSize: 15),textAlign: TextAlign.justify,),
+                  const Text('AttendEase is all about students being free. Students should be allowed the flexibility of the classes they attend. And this is the same reason why AttendEase exists!', style: TextStyle(fontSize: 16),textAlign: TextAlign.justify,),
                   const SizedBox(height: 20,),
                   const Text('NOTE:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-                  const Text('AttendEase will not ever endorse the skipping of classes. Students must take responsibility for their actions', style: TextStyle(fontSize: 15),textAlign: TextAlign.justify,),
+                  const Text('AttendEase will not ever endorse the skipping of classes. Students must take responsibility for their actions.', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),textAlign: TextAlign.justify,),
                 ],
               ),
                Column(
@@ -42,14 +42,14 @@ class _SettingsState extends State<About> {
                   const Text('Pranav M, SCTCE', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                   Row(
                     children: [
-                      const Text('Follow me here!:'),
+                      const Text('Follow here:'),
                       const SizedBox(width: 20,),
                       GestureDetector(
                         onTap: () async{
                           final Uri url = Uri.parse("https://github.com/trulyPranav");
                           await launchUrl(url);
                         },
-                        child: const ImageIcon(AssetImage('assets/github.png'), size: 45, ),
+                        child: const ImageIcon(AssetImage('assets/github.png'), size: 35, ),
                       ),
                       const SizedBox(width: 10,),
                       GestureDetector(
@@ -57,17 +57,19 @@ class _SettingsState extends State<About> {
                           final Uri url = Uri.parse("https://instagram.com/pranav072_");
                           await launchUrl(url);
                         },
-                        child: const ImageIcon(AssetImage('assets/insta.png'), size: 60, ),
+                        child: const ImageIcon(AssetImage('assets/insta.png'), size: 49, ),
                       )
                     ],
                   ),
+                  const SizedBox(height: 20,),
                   GestureDetector(
                     onTap: () async{
                       final Uri url = Uri.parse("https://github.com/trulyPranav/AttendEase");
                       await launchUrl(url);
                     },
-                    child: const Text('Click Here for Project Source Code.\nStar the Repo! It\'ll do noting but motivate!\nFeel free to PR and contribute!', style: TextStyle(fontSize: 15,decoration: TextDecoration.underline),),
+                    child: const Text('Click Here for Project Source Code!', style: TextStyle(fontSize: 15,decoration: TextDecoration.underline),),
                   ),
+                  const Text('Star the Repo! It\'ll do nothing but motivate!\nFeel free to PR and contribute!', style: TextStyle(fontSize: 15,),),
                 ],
               ),
               Center(
@@ -77,7 +79,7 @@ class _SettingsState extends State<About> {
                   backgroundColor: Colors.blue.shade700
                 ),
                 onPressed: (){okbie(context);},
-                child: const Text('Click!')),
+                child: const Text('CLICK!!')),
               )
             ],
           ),
@@ -91,16 +93,16 @@ class _SettingsState extends State<About> {
     }, child: const Text('Go Back', style: TextStyle(fontWeight: FontWeight.bold)));
 
     Widget yesDone = ElevatedButton(onPressed: () async{
-      final Uri url = Uri.parse("upi://pay?pa=pranavm265@okaxis&pn=Pranav M&aid=uGICAgMCyyNLGQw");
+      final Uri url = Uri.parse("https://www.instagram.com/tinkerhub_sctce/");
       await launchUrl(url);
     }, child: const Text('Sure! Let\'s Go!', style: TextStyle(fontWeight: FontWeight.bold)));
 
     AlertDialog allIsWell = AlertDialog(
     actionsAlignment: MainAxisAlignment.center,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-    title: const Center(child: Text("Buy me a Coffee :)",style: TextStyle(fontWeight: FontWeight.bold),)),
+    title: const Center(child: Text("Follow TinkerHub Instagram :)",style: TextStyle(fontWeight: FontWeight.bold),)),
     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-    content: const Text("A huge amount of time and resources is invested in building these projects; Supporting will help to develop further versions of the application with even more features along with support for IOS :)"),
+    content: const Text("TinkerHub is a non-profit community for coding enthusiasts, helping individuals leverage their skills, making them diverse and up-to-date.\nFollow us, and support for more such projects",),
     actions: [
       getOut,
       SizedBox(width:  MediaQuery.of(context).size.width / 18,),
