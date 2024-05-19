@@ -5,6 +5,7 @@
 <img src="assets/logo.png" align=right height=200>
 
 - [Downloading](#download-attendease)
+  - [Requirements](#requirements)
 - [About](#about)
 - [Features](#features)
 - [Screens](#screens)
