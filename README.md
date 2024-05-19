@@ -29,8 +29,8 @@ Once logged in, the students are not required to re-login, and just reopen the a
 
 ## Features
 - Login directly through Etlab
-- Students need to login once.
-- NO ETLAB SURVEYS HERE!
+- Students need to login only once.
+- NO ETLAB SURVEYS HERE !
 - Students can select attendance percentages of:
     - 75%
     - 80%
