@@ -4,6 +4,7 @@
 
 <img src="assets/logo.png" align=right height=200>
 
+- [Downloading](#download-attendease)
 - [About](#about)
 - [Features](#features)
 - [Screens](#screens)
@@ -12,6 +13,9 @@
 - [Bugs and Issues](#bugs-and-issues)
 - [Contributing](#contributing)
 - [Supporting](#supporting)
+
+## Download AttendEase
+Download AttendEase from the release. Or if you're lazy, get the apk [here!](https://github.com/trulyPranav/AttendEase/releases/download/Application-Final/attendease.apk)
 
 ## About
 AttendEase is an attendance tracker app, that essentialy provides students the amount of classes they can skip safely.
