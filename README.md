@@ -17,6 +17,10 @@
 ## Download AttendEase
 Download AttendEase from the [Releases](https://github.com/trulyPranav/AttendEase/releases/latest). Or if you're lazy, get the apk [here!](https://github.com/trulyPranav/AttendEase/releases/download/Application-Final/attendease.apk)
 
+### Requirements
+- Android 11 and above
+- 40Mb of Free Space :)
+
 ## About
 AttendEase is an attendance tracker app, that essentialy provides students the amount of classes they can skip safely.
 It also provides an insight on how many classes a student needs to attend.
