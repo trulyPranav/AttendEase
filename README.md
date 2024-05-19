@@ -1,7 +1,9 @@
 # AttendEase
-<img src="assets/logo.png" align=right height=200>
 
 ## GoTo:
+
+<img src="assets/logo.png" align=right height=200>
+
 - [About](#about)
 - [Features](#features)
 - [Screens](#screens)
@@ -9,6 +11,7 @@
 - [Backend and APIs (The Etlab Integration)](#backend-and-apis-the-etlab-integration)
 - [Bugs and Issues](#bugs-and-issues)
 - [Contributing](#contributing)
+- [Supporting](#supporting)
 
 ## About
 AttendEase is an attendance tracker app, that essentialy provides students the amount of classes they can skip safely.
@@ -40,8 +43,10 @@ Once logged in, the students are not required to re-login, and just reopen the a
 <img src="readmeAssets/keviAsset.jpeg" height=400>    <img src="readmeAssets/featureAsset.jpeg" height=400>
 
 ## Backend and APIs (The Etlab Integration)
-Etlab integration is achieved through web scraping. Hence, this app can be used by any institutions, just by changing the backend Etlab endpoints. 
+Etlab integration is achieved through web scraping. Hence, this app can be used by any institutions, just by changing the backend Etlab endpoints.
+<br>
 The Backend code can be found [here!](https://github.com/trulyPranav/fetcherAPI)
+<br>
 The current backend is specific for SCTCE, hence feel free to fork and craft your own endpoints!
 
 ## Future Releases
@@ -60,4 +65,7 @@ Ofcourse anyone can contribute to this, just do the below:
 - Implement what you're planning
 - Create a Pull Request
 I'll surely merge after looking through it!
+
+## Supporting
+If you like the project/app, do star the repository! It'll do nothing but motivate!
 
