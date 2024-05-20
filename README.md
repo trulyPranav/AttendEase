@@ -70,7 +70,7 @@ If you encounter a bug, calculation errors, or something, feel free to create an
 
 ## Contributing
 Ofcourse anyone can contribute to this, just do the below:
-- Fort the Project
+- Fork the Project
 - Implement what you're planning
 - Create a Pull Request
 I'll surely merge after looking through it!
